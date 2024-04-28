@@ -8,7 +8,7 @@ image:
 replicaCount: 1 # Number of replicas, need storge class support of multiple read when pvc enabled and replica > 1
 
 llm:
-  models: ["phi3"] # List of models to be loaded
+  models: ["phi3", "llama3"] # List of models to be pre-loaded (refer https://ollama.com/library for the supported models)
 
 persistentVolume: # If true, use a Persistent Volume Claim, If false, use emptyDir
   enabled: true
