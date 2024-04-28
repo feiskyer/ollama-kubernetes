@@ -5,7 +5,7 @@ Kubernetes Helm chart to deploy Large Language Models with Ollama.
 ## How to use this chart
 
 ```bash
-helm repo add ollama https://ollama.github.io/helm-charts
+helm repo add ollama https://feisky.xyz/ollama-kubernetes
 helm repo update
 helm upgrade --install ollama ollama/ollama \
     --namespace=ollama \
@@ -45,6 +45,7 @@ The following table lists the configurable parameters of the Ollama chart and th
 | `tolerations` | Tolerations for Ollama Pod | `[{"key": "kubernetes.azure.com/scalesetpriority", "operator": "Exists"}]` |
 | `affinity` | Affinity for Ollama Pod | `{}` |
 | `ui.enabled` | Whether to enable WebUI | `true` |
+| `ui.type` |  Supported UI types are "open-webui" and "lobe-chat"| `lobe-chat` |
 | `ui.replicaCount` | Replica count for WebUI Pod | `1` |
 | `ui.image.repository` | Image repository of WebUI Pod | `"ghcr.io/open-webui/open-webui"` |
 | `ui.image.tag` | Image tag of WebUI Pod | `"latest"` |
