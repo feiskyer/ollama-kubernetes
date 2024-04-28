@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ (printf "%s-webui" (include "ollama.fullname" .)) }}
+  labels:
+    {{- include "ollama.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.ui.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "ollama.selectorLabelsUI" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "ollama.labels" . | nindent 8 }}
+        {{- include "ollama.selectorLabelsUI" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: webui
+          image: "{{ .Values.ui.image.repository }}:{{ .Values.ui.image.tag }}"
+          imagePullPolicy: {{ .Values.ui.image.pullPolicy }}
+          ports:
+            - name: http
+              {{- if eq .Values.ui.type "open-webui" }}
+              containerPort: 8080
+              {{- else if eq .Values.ui.type "lobe-chat" }}
+              containerPort: 3210
+              {{- end }}
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "50Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"
+          env:
+            - name: OLLAMA_BASE_URL
+              value: {{ (printf "http://%s" (include "ollama.fullname" .)) }}:{{ .Values.service.port }}
+            - name: OLLAMA_PROXY_URL
+              value: {{ (printf "http://%s" (include "ollama.fullname" .)) }}:{{ .Values.service.port }}
+            - name: DATA_DIR
+              value: "/data"
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          volumeMounts:
+            - name: webui-data
+              mountPath: /data
+      volumes:
+        - name: webui-data
+          {{- if .Values.ui.persistentVolume.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.ui.persistentVolume.claimName |  default (printf "%s-webui" (include "ollama.fullname" .)) }}
+          {{- else }}
+          emptyDir: { }
+          {{- end }}
+      {{- with .Values.ui.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.ui.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.ui.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

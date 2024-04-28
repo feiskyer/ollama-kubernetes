@@ -1,0 +1,31 @@
+{{- if .Values.llm.models -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ (printf "%s-llm-puller" (include "ollama.fullname" .)) }}
+  labels:
+    {{- include "ollama.labels" . | nindent 4 }}
+spec:
+  ttlSecondsAfterFinished: 100
+  template:
+    spec:
+      containers:
+      - name: llm-puller
+        image: alpine
+        command:
+        - /bin/sh
+        - -c
+        - |
+          set -e
+          apk add --no-cache curl
+          ollama_service="http://{{ include "ollama.fullname" . }}:{{ .Values.service.port }}"
+          while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' ${ollama_service})" != "200" ]]; do
+            echo "Waiting for Ollama service to be ready..."
+            sleep 5
+          done
+          {{- range $model := .Values.llm.models }}
+          echo "Pulling model: {{ $model }}"
+          curl -s ${ollama_service}/api/pull -d '{"name": "{{ $model }}"}'
+          {{- end }}
+      restartPolicy: Never
+{{- end -}}
