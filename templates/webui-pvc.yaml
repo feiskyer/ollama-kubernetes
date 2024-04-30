@@ -1,5 +1,6 @@
-{{- if .Values.ui.persistentVolume.enabled -}}
-{{- if not .Values.ui.persistentVolume.claimName -}}
+{{- if .Values.ui.enabled }}
+{{- if .Values.ui.persistentVolume.enabled }}
+{{- if not .Values.ui.persistentVolume.claimName }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -13,5 +14,6 @@ spec:
   resources:
     requests:
       storage: "{{ .Values.ui.persistentVolume.size }}"
-{{- end -}}
-{{- end -}}
+{{- end }}
+{{- end }}
+{{- end }}

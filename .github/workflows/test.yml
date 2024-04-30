@@ -7,9 +7,7 @@ on:
   pull_request:
 
 jobs:
-  release:
-    permissions:
-      contents: write
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -18,7 +16,7 @@ jobs:
           fetch-depth: 0
 
       - name: Install Helm
-        uses: azure/setup-helm@v3
+        uses: azure/setup-helm@v4
 
       - name: Run Lint Tests
         run: helm lint
