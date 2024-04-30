@@ -24,4 +24,5 @@ mv /tmp/ollama/*.yaml .
 # Commit and push
 git add -A .
 git commit -a -m 'Update helm releases'
+git remote set-url origin  https://feiskyer:${GITHUB_TOKEN}@github.com/feiskyer/ollama-kubernetes.git
 git push -q -u origin gh-pages
