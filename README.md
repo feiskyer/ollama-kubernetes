@@ -27,7 +27,7 @@ The following table lists the configurable parameters of the Ollama chart and th
 | Parameter                | Description             | Default        |
 | ------------------------ | ----------------------- | -------------- |
 | `image.repository` | Image repository of Ollama | `"ollama/ollama"` |
-| `image.tag` | Image tag of Ollama | `0.1.32` |
+| `image.tag` | Image tag of Ollama | `0.2.3` |
 | `replicaCount` | Number of replicas, need storge class support of multiple read when pvc enabled and replica > 1 | `1` |
 | `llm.models` | List of models to be loaded | `["phi3", "llama3"]` |
 | `persistentVolume.enabled` | Whether to enable persistent volume for Ollama | `true` |
