@@ -11,6 +11,7 @@ if [ -d ${REPO_ROOT}/.cache/releases ]; then
 fi
 
 git clone https://github.com/feiskyer/ollama-kubernetes -b gh-pages ${REPO_ROOT}/.cache/releases
+cp README.md ${REPO_ROOT}/.cache/releases/
 cd ${REPO_ROOT}/.cache/releases
 
 # Build helm releases
