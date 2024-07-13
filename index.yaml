@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   ollama:
   - apiVersion: v2
+    appVersion: 0.2.3
+    created: "2024-07-13T21:22:47.808223+08:00"
+    description: Kubernetes Helm chart to deploy Ollama for Large Language Models
+    digest: 80e977f0472dc7e848388a8cae13c3acd64e79ed4976882292678176a009522c
+    name: ollama
+    type: application
+    urls:
+    - https://feisky.xyz/ollama-kubernetes/ollama-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
     appVersion: 0.1.32
     created: "2024-04-28T13:51:34.203546738Z"
     description: Kubernetes Helm chart to deploy Ollama for Large Language Models
@@ -21,4 +31,4 @@ entries:
     urls:
     - https://feisky.xyz/ollama-kubernetes/ollama-0.1.0.tgz
     version: 0.1.0
-generated: "2024-04-30T10:54:26.0206827Z"
+generated: "2024-07-13T21:22:47.807523+08:00"
