@@ -28,14 +28,14 @@ spec:
             - name: http
               {{- if eq .Values.ui.type "open-webui" }}
               containerPort: 8080
-              {{- else if eq .Values.ui.type "lobe-chat" }}
+              {{- else }}
               containerPort: 3210
               {{- end }}
               protocol: TCP
           resources:
             requests:
-              cpu: "100m"
-              memory: "50Mi"
+              cpu: "500m"
+              memory: "500Mi"
             limits:
               cpu: "1000m"
               memory: "1Gi"
@@ -45,14 +45,22 @@ spec:
             - name: OLLAMA_PROXY_URL
               value: {{ (printf "http://%s" (include "ollama.fullname" .)) }}:{{ .Values.service.port }}
             - name: DATA_DIR
+              {{- if eq .Values.ui.type "open-webui" }}
+              value: "/app/backend/data"
+              {{- else }}
               value: "/data"
+              {{- end }}
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:
             {{- toYaml .Values.readinessProbe | nindent 12 }}
           volumeMounts:
             - name: webui-data
+              {{- if eq .Values.ui.type "open-webui" }}
+              mountPath: /app/backend/data
+              {{- else }}
               mountPath: /data
+              {{- end }}
       volumes:
         - name: webui-data
           {{- if .Values.ui.persistentVolume.enabled }}

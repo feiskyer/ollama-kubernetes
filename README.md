@@ -4,12 +4,29 @@ Kubernetes Helm chart to deploy Large Language Models with Ollama.
 
 ## How to use this chart
 
+Setup helm chart repo:
+
 ```bash
 helm repo add ollama https://feisky.xyz/ollama-kubernetes
 helm repo update
+```
+
+Deploy Ollama with default [Lobe Chat](https://github.com/lobehub/lobe-chat) UI:
+
+```sh
 helm upgrade --install ollama ollama/ollama \
     --namespace=ollama \
     --create-namespace
+```
+
+Deploy Ollma with [Open WebUI](https://github.com/open-webui/open-webui):
+
+```sh
+helm upgrade --install ollama ollama/ollama \
+    --namespace=ollama \
+    --create-namespace \
+    --set ui.type=open-webui \
+    --set ui.image.repository=ghcr.io/open-webui/open-webui
 ```
 
 After the deployment, you can access the Ollama UI by port-forwarding the service:

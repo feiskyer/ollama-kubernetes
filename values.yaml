@@ -54,10 +54,16 @@ resources:
     # amd.com/gpu: "1"
 
 livenessProbe:
+  failureThreshold: 3
+  periodSeconds: 30
+  timeoutSeconds: 15
   httpGet:
     path: /
     port: http
 readinessProbe:
+  failureThreshold: 3
+  periodSeconds: 30
+  timeoutSeconds: 15
   httpGet:
     path: /
     port: http
