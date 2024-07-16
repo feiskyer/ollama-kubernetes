@@ -59,6 +59,14 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
+Pipeline Selector labels
+*/}}
+{{- define "ollama.selectorLabelsPipeline" -}}
+app.kubernetes.io/name: {{ (printf "%s-webui-pipelines" (include "ollama.name" .)) }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
 Create the name of the service account to use
 */}}
 {{- define "ollama.serviceAccountName" -}}

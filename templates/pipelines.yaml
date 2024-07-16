@@ -1,0 +1,96 @@
+{{- if .Values.ui.enabled }}
+{{- if eq .Values.ui.type "open-webui" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ (printf "%s-pipelines" (include "ollama.fullname" .)) }}
+  labels:
+    {{- include "ollama.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.ui.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "ollama.selectorLabelsPipeline" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "ollama.labels" . | nindent 8 }}
+        {{- include "ollama.selectorLabelsPipeline" . | nindent 8 }}
+    spec:
+      containers:
+        - name: webui
+          image: "{{ .Values.ui.pipelineImage.repository }}:{{ .Values.ui.pipelineImage.tag }}"
+          imagePullPolicy: {{ .Values.ui.pipelineImage.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 9099
+              protocol: TCP
+          env:
+            - name: PIPELINES_DIR
+              value: "/app/pipelines"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "100Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          volumeMounts:
+            - name: pipelines-data
+              mountPath: /app/pipelines
+      volumes:
+        - name: pipelines-data
+          {{- if .Values.ui.persistentVolume.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ (printf "%s-pipelines" (include "ollama.fullname" .)) }}
+          {{- else }}
+          emptyDir: { }
+          {{- end }}
+      {{- with .Values.ui.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.ui.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.ui.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ (printf "%s-pipelines" (include "ollama.fullname" .)) }}
+  labels:
+    {{- include "ollama.labels" . | nindent 4 }}
+spec:
+  accessModes:
+{{ toYaml .Values.ui.persistentVolume.accessModes | indent 4 }}
+  storageClassName: "{{ .Values.ui.persistentVolume.storageClass }}"
+  resources:
+    requests:
+      storage: "{{ .Values.ui.persistentVolume.size }}"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ (printf "%s-pipelines" (include "ollama.fullname" .)) }}
+  labels:
+    {{- include "ollama.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9099
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "ollama.selectorLabelsPipeline" . | nindent 4 }}
+{{- end }}
+{{- end }}

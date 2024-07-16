@@ -92,6 +92,10 @@ ui:
     repository: lobehub/lobe-chat # or use ghcr.io/open-webui/open-webui for "open-webui"
     pullPolicy: IfNotPresent
     tag: "latest"
+  pipelineImage:
+    repository: ghcr.io/open-webui/pipelines # only for "open-webui"
+    pullPolicy: IfNotPresent
+    tag: "latest"
   service:
     type: ClusterIP
     port: 80

@@ -44,12 +44,17 @@ spec:
               value: {{ (printf "http://%s" (include "ollama.fullname" .)) }}:{{ .Values.service.port }}
             - name: OLLAMA_PROXY_URL
               value: {{ (printf "http://%s" (include "ollama.fullname" .)) }}:{{ .Values.service.port }}
+            {{- if eq .Values.ui.type "open-webui" }}
             - name: DATA_DIR
-              {{- if eq .Values.ui.type "open-webui" }}
               value: "/app/backend/data"
-              {{- else }}
+            - name: OPENAI_API_KEY
+              value: "0p3n-w3bu!"
+            - name: OPENAI_API_BASE_URL
+              value: {{ (printf "http://%s-pipelines:9099" (include "ollama.fullname" .)) }}
+            {{- else }}
+            - name: DATA_DIR
               value: "/data"
-              {{- end }}
+            {{- end }}
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:
