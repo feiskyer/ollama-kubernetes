@@ -1,5 +1,5 @@
 {{- if .Values.ui.ingress.enabled -}}
-{{- $fullName := include "ollama.fullname" . -}}-webui
+{{- $fullName := printf "%s-webui" (include "ollama.fullname" .) -}}
 {{- $svcPort := .Values.ui.service.port -}}
 {{- if and .Values.ui.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
   {{- if not (hasKey .Values.ui.ingress.annotations "kubernetes.io/ingress.class") }}
