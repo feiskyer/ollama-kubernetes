@@ -26,11 +26,7 @@ spec:
           imagePullPolicy: {{ .Values.ui.image.pullPolicy }}
           ports:
             - name: http
-              {{- if eq .Values.ui.type "open-webui" }}
               containerPort: 8080
-              {{- else }}
-              containerPort: 3210
-              {{- end }}
               protocol: TCP
           resources:
             requests:
@@ -44,28 +40,19 @@ spec:
               value: {{ (printf "http://%s" (include "ollama.fullname" .)) }}:{{ .Values.service.port }}
             - name: OLLAMA_PROXY_URL
               value: {{ (printf "http://%s" (include "ollama.fullname" .)) }}:{{ .Values.service.port }}
-            {{- if eq .Values.ui.type "open-webui" }}
             - name: DATA_DIR
               value: "/app/backend/data"
             - name: OPENAI_API_KEY
               value: "0p3n-w3bu!"
             - name: OPENAI_API_BASE_URL
               value: {{ (printf "http://%s-pipelines:9099" (include "ollama.fullname" .)) }}
-            {{- else }}
-            - name: DATA_DIR
-              value: "/data"
-            {{- end }}
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:
             {{- toYaml .Values.readinessProbe | nindent 12 }}
           volumeMounts:
             - name: webui-data
-              {{- if eq .Values.ui.type "open-webui" }}
               mountPath: /app/backend/data
-              {{- else }}
-              mountPath: /data
-              {{- end }}
       volumes:
         - name: webui-data
           {{- if .Values.ui.persistentVolume.enabled }}

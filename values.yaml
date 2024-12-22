@@ -87,13 +87,12 @@ affinity: {}
 ui:
   enabled: true
   replicaCount: 1
-  type: "lobe-chat" # Supported values are "open-webui" and "lobe-chat"
   image:
-    repository: lobehub/lobe-chat # or use ghcr.io/open-webui/open-webui for "open-webui"
+    repository: ghcr.io/open-webui/open-webui
     pullPolicy: IfNotPresent
     tag: "latest"
   pipelineImage:
-    repository: ghcr.io/open-webui/pipelines # only for "open-webui"
+    repository: ghcr.io/open-webui/pipelines
     pullPolicy: IfNotPresent
     tag: "latest"
   service:

@@ -11,22 +11,12 @@ helm repo add ollama https://feisky.xyz/ollama-kubernetes
 helm repo update
 ```
 
-Deploy Ollama with default [Lobe Chat](https://github.com/lobehub/lobe-chat) UI:
+Deploy Ollama with [Open WebUI](https://github.com/open-webui/open-webui):
 
 ```sh
 helm upgrade --install ollama ollama/ollama \
     --namespace=ollama \
     --create-namespace
-```
-
-Deploy Ollma with [Open WebUI](https://github.com/open-webui/open-webui):
-
-```sh
-helm upgrade --install ollama ollama/ollama \
-    --namespace=ollama \
-    --create-namespace \
-    --set ui.type=open-webui \
-    --set ui.image.repository=ghcr.io/open-webui/open-webui
 ```
 
 After the deployment, you can access the Ollama UI by port-forwarding the service:
@@ -62,7 +52,6 @@ The following table lists the configurable parameters of the Ollama chart and th
 | `tolerations` | Tolerations for Ollama Pod | `[{"key": "kubernetes.azure.com/scalesetpriority", "operator": "Exists"}]` |
 | `affinity` | Affinity for Ollama Pod | `{}` |
 | `ui.enabled` | Whether to enable WebUI | `true` |
-| `ui.type` |  Supported UI types are "open-webui" and "lobe-chat"| `lobe-chat` |
 | `ui.replicaCount` | Replica count for WebUI Pod | `1` |
 | `ui.image.repository` | Image repository of WebUI Pod | `"ghcr.io/open-webui/open-webui"` |
 | `ui.image.tag` | Image tag of WebUI Pod | `"latest"` |

@@ -1,5 +1,4 @@
 {{- if .Values.ui.enabled }}
-{{- if eq .Values.ui.type "open-webui" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -92,5 +91,4 @@ spec:
       name: http
   selector:
     {{- include "ollama.selectorLabelsPipeline" . | nindent 4 }}
-{{- end }}
 {{- end }}
