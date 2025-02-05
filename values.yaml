@@ -2,20 +2,19 @@
 image:
   repository: ollama/ollama
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "v0.5.7"
 
 replicaCount: 1 # Number of replicas, need storge class support of multiple read when pvc enabled and replica > 1
 
 llm:
-  models: ["phi3", "llama3"] # List of models to be pre-loaded (refer https://ollama.com/library for the supported models)
+  models: ["phi4", "deepseek-r1:14b"] # List of models to be pre-loaded (refer https://ollama.com/library for the supported models)
 
 persistentVolume: # If true, use a Persistent Volume Claim, If false, use emptyDir
   enabled: true
   storageClass: "default"
   accessModes:
     - ReadWriteOnce
-  size: 30Gi
+  size: 100Gi
   claimName: "" # set to non-empty value to use an existing PVC
 
 imagePullSecrets: []

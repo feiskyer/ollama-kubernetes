@@ -34,13 +34,13 @@ The following table lists the configurable parameters of the Ollama chart and th
 | Parameter                | Description             | Default        |
 | ------------------------ | ----------------------- | -------------- |
 | `image.repository` | Image repository of Ollama | `"ollama/ollama"` |
-| `image.tag` | Image tag of Ollama | `0.5.4` |
+| `image.tag` | Image tag of Ollama | `0.5.7` |
 | `replicaCount` | Number of replicas, need storge class support of multiple read when pvc enabled and replica > 1 | `1` |
 | `llm.models` | List of models to be loaded | `["phi3", "llama3"]` |
 | `persistentVolume.enabled` | Whether to enable persistent volume for Ollama | `true` |
 | `persistentVolume.storageClass` | Storage class for Ollama persistent volume | `"default"` |
 | `persistentVolume.accessModes` | Access mode for Ollama persistent volume | `["ReadWriteOnce"]` |
-| `persistentVolume.size` | Storage size for Ollama persistent volume | `"30Gi"` |
+| `persistentVolume.size` | Storage size for Ollama persistent volume | `"100Gi"` |
 | `persistentVolume.claimName` | Set to non-empty value to use an existing PVC for Ollama persistent volume | `""` |
 | `resources.limits.cpu` | CPU limits for Ollama container | `4` |
 | `resources.limits.memory` | Memory limits for Ollama container  | `"4Gi"` |
