@@ -2,7 +2,7 @@
 image:
   repository: ollama/ollama
   pullPolicy: IfNotPresent
-  tag: "v0.5.7"
+  tag: "0.5.7"
 
 replicaCount: 1 # Number of replicas, need storge class support of multiple read when pvc enabled and replica > 1
 
